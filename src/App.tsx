@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/layout/Layout';
 import HomePage from './pages/HomePage';
 import WatchPage from './pages/WatchPage';
@@ -26,8 +27,22 @@ function App() {
         <AuthProvider>
           <Routes>
             <Route path="/signin" element={<SignInPage />} />
-            <Route path="/shorts" element={<ShortsPage />} />
-            <Route path="/*" element={<Layout />}>
+            <Route
+              path="/shorts"
+              element={
+                <ProtectedRoute>
+                  <ShortsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/*"
+              element={
+                <ProtectedRoute>
+                  <Layout />
+                </ProtectedRoute>
+              }
+            >
               <Route index element={<HomePage />} />
               <Route path="watch/:id" element={<WatchPage />} />
               <Route path="upload" element={<UploadPage />} />
@@ -58,3 +73,4 @@ function App() {
 }
 
 export default App;
+
